@@ -83,8 +83,8 @@
                     <a class="nav-link" href="filling.html">Filing</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="aboutus.html">About Us</a>
-              </li>
+                    <a class="nav-link" href="aboutus.html">About Us</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -92,39 +92,39 @@
 <!-- EsegModal -->
 <div class="modal fade" id="esegModal" tabindex="-1" aria-labelledby="esegModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="esegModalLabel">Modal title</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="esegModalLabel">Signature</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <section class="container">
+                    <div id="toolbar">
+                        <h1>Signature</h1>
+                        <br>
+                        <button id="clear" type="button" class="btn btn-outline-primary">Clear Canvas</button>
+                        <button id="save" type="button" class="btn btn-outline-success">Save</button>
+                    </div>
+                    <div class="drawing-board">
+                        <canvas id="drawing-board"></canvas>
+                    </div>
+                </section>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
         </div>
-        <div class="modal-body">
-            <section class="container">
-                <div id="toolbar">
-                    <h1>Signature</h1>
-                    <br>
-                    <button id="clear" type="button" class="btn btn-outline-primary">Clear Canvas</button>
-                    <button id="save" type="button" class="btn btn-outline-success">Save</button>
-                </div>
-                <div class="drawing-board">
-                    <canvas id="drawing-board"></canvas>
-                </div>
-            </section>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
 <div class="background">
     <div class="content">
         <h1>Filing a Report</h1>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">File A Blotter</button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#blotterModal" data-bs-whatever="@mdo">File A Blotter</button>
     </div>
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="blotterModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -194,23 +194,29 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
-                </div>
-                <label for="inputPassword5" class="form-label">Password</label>
-                <input type="password" id="inputPassword5" class="form-control" aria-describedby="passwordHelpBlock">
-                <div id="passwordHelpBlock" class="form-text"></div>
+                <form>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Username:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Password:</label>
+                        <input type="password" class="form-control" id="message-text">
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary">Submit</button>
             </div>
         </div>
     </div>
 </div>
+<div class="content">
+    <h1>Filing a Report</h1>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">File A Blotter</button>
+</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script>
     let reports = JSON.parse(localStorage.getItem('reports')) || [];
     let reportCount = reports.length;
@@ -317,69 +323,8 @@
 
     renderReports();
 </script>
-
-<script>
-    const canvas = document.getElementById('drawing-board');
-    const toolbar = document.getElementById('toolbar');
-    const ctx = canvas.getContext('2d');
-
-    canvas.width = 400;
-    canvas.height = 300;
-
-    // Fill canvas with white background
-    ctx.fillStyle = "white";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    let isPainting = false;
-    let lineWidth = 5;
-
-    toolbar.addEventListener('click', e => {
-        if (e.target.id === 'clear') {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillRect(0, 0, canvas.width, canvas.height); // Refill with white background
-        }
-        if (e.target.id === 'save') {
-            const link = document.createElement('a');
-            link.download = 'drawing.png';
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-        }
-    });
-
-    toolbar.addEventListener('change', e => {
-        if(e.target.id === 'stroke') {
-            ctx.strokeStyle = e.target.value;
-        }
-
-        if(e.target.id === 'lineWidth') {
-            lineWidth = e.target.value;
-        }
-    });
-
-    const draw = (e) => {
-        if(!isPainting) {
-            return;
-        }
-
-        ctx.lineWidth = lineWidth;
-        ctx.lineCap = 'round';
-
-        ctx.lineTo(e.offsetX, e.offsetY);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(e.offsetX, e.offsetY);
-    }
-
-    canvas.addEventListener('mousedown', () => {
-        isPainting = true;
-    });
-
-    canvas.addEventListener('mouseup', () => {
-        isPainting = false;
-        ctx.beginPath();
-    });
-
-    canvas.addEventListener('mousemove', draw);
-  </script>
+<script src="drawing_board.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-C7+/okzPmwo7qUZDpGHRDboBXtN9MosD8euOqf5wA/C6O6p4P0p1FkdKHs9BM8jM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9fI/K5i1s1osKcCk1pFda1P7L4R2ImoIHANq7s0hV6ztfqK2I1wBLrZ" crossorigin="anonymous"></script>
 </body>
 </html>
